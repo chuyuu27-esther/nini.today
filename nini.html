@@ -118,7 +118,7 @@
 </div>
 
 <script>
-    const passwords = { "0926": "샤오바오", "2022": "다바오" };
+    const passwords = { "0000": "Nini'bf", "1111": "Nini" };
     window.loginRole = null;
     while (!window.loginRole) {
         let pwd = prompt("당신만의 비밀 코드를 입력하세요 🤫");
@@ -132,7 +132,7 @@
 </script>
 
 <h2>오늘도 함께 발전하자 🌸</h2>
-<div class="subtitle">샤오바오 🐶 & 다바오 🐰 의 비밀 기지</div>
+<div class="subtitle">Nini'bf 🐼 & Nini 🐱 의 비밀 기지</div>
 
 <div class="container">
     <div id="my-section"></div>
@@ -178,7 +178,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, set, onValue, push, remove, serverTimestamp, update, child } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    // 已經替換為你的專屬金鑰
     const firebaseConfig = {
         apiKey: "AIzaSyDY78fLhiuEs3t4F1Ps9dKBCzd61axnCDA",
         authDomain: "nini-20260518.firebaseapp.com",
@@ -186,7 +185,7 @@
         storageBucket: "nini-20260518.firebasestorage.app",
         messagingSenderId: "588891461039",
         appId: "1:588891461039:web:3b13cff1ef704883aa4b5a",
-        databaseURL: "https://nini-20260518-default-rtdb.firebaseio.com/" // 補上這行確保穩定連線
+        databaseURL: "https://nini-20260518-default-rtdb.firebaseio.com/"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -195,7 +194,7 @@
 
     let currentUser = window.loginRole; 
     let globalData = { active: {}, tomorrow: {}, messages: {}, history: {}, videos: {}, settings: {}, wishes: {} };
-    const userMap = { '샤오바오': { partner: '다바오', icon: '🐶' }, '다바오': { partner: '샤오바오', icon: '🐰' } };
+    const userMap = { "Nini'bf": { partner: 'Nini', icon: '🐼' }, 'Nini': { partner: "Nini'bf", icon: '🐱' } };
     
     let isEditingToday = false, isEditingTomorrow = false;
     window.showAllHistory = false;
@@ -230,7 +229,7 @@
 
         let rawActive = d.active || {}, rawTomorrow = d.tomorrow || {}, rawMessages = d.messages || {}, needsUpdate = false, updateData = {};
 
-        ['샤오바오', '다바오'].forEach(u => {
+        ["Nini'bf", 'Nini'].forEach(u => {
             if ((rawActive[u] && rawActive[u].logicDate !== logicToday) || (rawTomorrow[u] && rawTomorrow[u].createDate && rawTomorrow[u].createDate !== logicToday)) {
                 if (rawActive[u] && rawActive[u].status !== 'completed') {
                     const newKey = push(child(ref(db), 'coupleDataKR/history')).key;
@@ -330,22 +329,22 @@
         }
         
         let titleText = `🎥 ${dateStr}`;
-        if (filter === '샤오바오') titleText += '<br><small style="font-size:0.9rem; color:#888;">🐶 샤오바오의 전용 채널</small>';
-        if (filter === '다바오') titleText += '<br><small style="font-size:0.9rem; color:#888;">🐰 다바오의 전용 채널</small>';
+        if (filter === "Nini'bf") titleText += '<br><small style="font-size:0.9rem; color:#888;">🐼 Nini\'bf의 전용 채널</small>';
+        if (filter === 'Nini') titleText += '<br><small style="font-size:0.9rem; color:#888;">🐱 Nini의 전용 채널</small>';
         document.getElementById('video-modal-title').innerHTML = titleText;
         
         const vData = globalData.videos[dateStr] || {};
         let listHtml = '';
 
-        if (typeof vData.dog === 'string') {
-            if (!filter || filter === '샤오바오') listHtml += createVideoItemHtml('dog', '샤오바오', '오늘 공유한 영상', vData.dog);
+        if (typeof vData.panda === 'string') {
+            if (!filter || filter === "Nini'bf") listHtml += createVideoItemHtml('panda', "Nini'bf", '오늘 공유한 영상', vData.panda);
         }
-        if (typeof vData.rabbit === 'string') {
-            if (!filter || filter === '다바오') listHtml += createVideoItemHtml('rabbit', '다바오', '오늘 공유한 영상', vData.rabbit);
+        if (typeof vData.cat === 'string') {
+            if (!filter || filter === 'Nini') listHtml += createVideoItemHtml('cat', 'Nini', '오늘 공유한 영상', vData.cat);
         }
 
         Object.entries(vData).forEach(([k, v]) => {
-            if (k !== 'dog' && k !== 'rabbit' && typeof v === 'object') {
+            if (k !== 'panda' && k !== 'cat' && typeof v === 'object') {
                 if (!filter || filter === v.owner) {
                     listHtml += createVideoItemHtml(k, v.owner, v.title, v.url);
                 }
@@ -357,7 +356,7 @@
     };
 
     function createVideoItemHtml(key, owner, title, url) {
-        const icon = owner === '샤오바오' ? '🐶' : '🐰';
+        const icon = owner === "Nini'bf" ? '🐼' : '🐱';
         const canEdit = owner === currentUser;
         return `
         <div style="display:flex; justify-content:space-between; align-items:center; background:#f5fff5; padding:12px 15px; border-radius:12px; margin-bottom:10px; border:1px solid #e2f3e2;">
@@ -651,13 +650,13 @@
                 const dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
                 const vData = globalData.videos[dateStr] || {};
                 
-                let hasDog = false, hasRabbit = false;
-                if (typeof vData.dog === 'string') hasDog = true;
-                if (typeof vData.rabbit === 'string') hasRabbit = true;
+                let hasPanda = false, hasCat = false;
+                if (typeof vData.panda === 'string') hasPanda = true;
+                if (typeof vData.cat === 'string') hasCat = true;
                 Object.entries(vData).forEach(([k, v]) => {
-                    if (k !== 'dog' && k !== 'rabbit' && typeof v === 'object') {
-                        if (v.owner === '샤오바오') hasDog = true;
-                        if (v.owner === '다바오') hasRabbit = true;
+                    if (k !== 'panda' && k !== 'cat' && typeof v === 'object') {
+                        if (v.owner === "Nini'bf") hasPanda = true;
+                        if (v.owner === 'Nini') hasCat = true;
                     }
                 });
                 
@@ -668,8 +667,8 @@
                 html += `<div class="cal-day" style="${styleStr}" ${clickEvent}>
                     <span style="font-size:0.7rem; color:#ccc;">${d}</span>
                     <div style="display:flex; gap:2px; font-size:1.1rem; margin-top:2px;">
-                        ${hasDog ? `<span onclick="event.stopPropagation(); openVideoModal('${dateStr}', '샤오바오')" style="cursor:pointer;">🐶</span>` : ''}
-                        ${hasRabbit ? `<span onclick="event.stopPropagation(); openVideoModal('${dateStr}', '다바오')" style="cursor:pointer;">🐰</span>` : ''}
+                        ${hasPanda ? `<span onclick="event.stopPropagation(); openVideoModal('${dateStr}', \`Nini'bf\`)" style="cursor:pointer;">🐼</span>` : ''}
+                        ${hasCat ? `<span onclick="event.stopPropagation(); openVideoModal('${dateStr}', 'Nini')" style="cursor:pointer;">🐱</span>` : ''}
                     </div>
                 </div>`;
             }
